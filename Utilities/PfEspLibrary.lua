@@ -265,7 +265,7 @@ defaultsettings = {
 
         MaxDistance = 1000,
 
-        Refreshtime = 1
+        Refreshtime = 5
     }
 }
 
@@ -891,8 +891,6 @@ function AddToRenderList(plr)
             crosshairvertical.Visible = false
         end
 
-        task.wait(math.clamp(esp_settings.Other.Refreshtime / 100, 0, 9e9))
-
         CanRun = true
         end)
     end
@@ -938,7 +936,7 @@ function AddWeaponsToRenderList(gun)
 
     local text = Drawing.new("Text")
     text.Visible = false
-    text.Text = gun:FindFirstChild("Gun") and gun.Gun.Value or "Error getting weapon name"
+    text.Text = ""..gun.Gun.Value.."\n"..gun.Spare.Value.." Bullets"
     text.Color = esp_settings.Colors.WeaponColor
     text.Size = esp_settings.Other.WeaponTextSize
     text.Font = esp_settings.Other.WeaponFontFamily
@@ -1008,5 +1006,4 @@ task.spawn(function()
         RemoveWeaponFromRenderList(gun)
     end)
 end)
-
 return library
