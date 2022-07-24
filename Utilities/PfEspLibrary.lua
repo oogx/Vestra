@@ -51,7 +51,9 @@ do
             elseif (rawget(v, "isplayeralive")) then
                 HUD = v
             elseif (rawget(v, "updateammo")) then
-                client.hud = v          
+                client.hud = v    
+            elseif (rawget(v, "play")) then
+                client.sound = v                        
             end
             if rawget(v, 'player') then
                 table.insert(animations, v)
