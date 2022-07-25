@@ -33,7 +33,7 @@ do
         if type == "table" then
             if (rawget(v, 'send')) then
                 network = v
-                client.network = v
+                client.send = v
             elseif (rawget(v, 'basecframe')) then
                 client.camera = v
             elseif (rawget(v, "gammo")) then
@@ -53,9 +53,11 @@ do
             elseif (rawget(v, "updateammo")) then
                 client.hud = v    
             elseif (rawget(v, "play")) then
-                client.sound = v    
-            elseif (rawget(v, "votestep")) then
-                client.hud = v                   
+                client.sound = v      
+            elseif (rawget(v, "add")) then
+                client.network = v                    
+            elseif (rawget(v, "spot")) then
+                client.spotplayer = v                        
             end
             if rawget(v, 'player') then
                 table.insert(animations, v)
