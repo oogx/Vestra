@@ -53,7 +53,7 @@ do
             elseif (rawget(v, "updateammo")) then
                 client.hud = v    
             elseif (rawget(v, "play")) then
-                client.sound = v                        
+                client.sound = v
             end
             if rawget(v, 'player') then
                 table.insert(animations, v)
