@@ -48,6 +48,8 @@ do
                 client.char = v
             elseif (rawget(v, "getscale")) then
                 client.uiscaler = v
+            elseif (rawget(v, "effects")) then
+                client.effects = v               
             elseif (rawget(v, "isplayeralive")) then
                 HUD = v
             elseif (rawget(v, "updateammo")) then
@@ -58,8 +60,6 @@ do
             if rawget(v, 'player') then
                 table.insert(animations, v)
             end
-
-
         end
     end
 end
