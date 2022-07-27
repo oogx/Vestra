@@ -54,6 +54,8 @@ do
                 client.hud = v    
             elseif (rawget(v, "play")) then
                 client.sound = v
+            elseif (rawget(v, "setsprintdisable", "setequipped")) then
+                client.gunhandler = v
             end
             if rawget(v, 'player') then
                 table.insert(animations, v)
