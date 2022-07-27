@@ -49,7 +49,7 @@ do
             elseif (rawget(v, "getscale")) then
                 client.uiscaler = v
             elseif (rawget(v, "effects")) then
-                client.effects = v               
+                client.effects = v.effects.module.breakwindow        
             elseif (rawget(v, "isplayeralive")) then
                 HUD = v
             elseif (rawget(v, "updateammo")) then
