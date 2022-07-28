@@ -23,6 +23,11 @@ do
             if debug.getinfo(v).name == "loadmodules" then
                 client.loadmodules = v
             end
+            local info = debug.getinfo(v);
+            if (info.name == "call" and string.find(info.short_src, "network")) then
+                call = v;
+                networkCalls = debug.getupvalue(v, 1);
+            end            
             local name = getinfo(v).name 
             if name == "bulletcheck" then
 				bulletCheck = v
@@ -54,6 +59,18 @@ do
                 client.hud = v    
             elseif (rawget(v, "play")) then
                 client.sound = v
+            elseif (rawget(v, "loadgrenade")) then
+                client.char = v                
+            elseif (rawget(v, "new")) and (rawget(v, "reset")) then
+                client.particle = v                        
+            elseif (rawget(v, "getPlayerData")) and (rawget(v, "isDataReady")) then
+                client.datastore = v      
+            elseif (rawget(v, "getPlayerData")) and (rawget(v, "isDataReady")) then
+                client.datastore = v  
+            elseif (rawget(v, "rankCalculator")) and (rawget(v, "getPlayerRank")) then
+                client.datausage = v  
+            elseif (rawget(v, "getAllWeaponsList"))  then
+                client.content = v                  
             end
         end
     end
