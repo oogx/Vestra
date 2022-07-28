@@ -55,9 +55,6 @@ do
             elseif (rawget(v, "play")) then
                 client.sound = v
             end
-            if rawget(v, 'player') then
-                table.insert(animations, v)
-            end
         end
     end
 end
