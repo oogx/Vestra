@@ -26,6 +26,8 @@ do
                 client.gamelogic = v
             elseif (rawget(v, "updateammo")) then
                 client.hud = v
+            elseif (rawget(v, "getbodyparts")) then
+                plrList = getupvalue(v.getbodyparts,1)
             end
         end
     end
