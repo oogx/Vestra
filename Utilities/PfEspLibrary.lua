@@ -19,7 +19,13 @@ do
             local info = debug.getinfo(v);
             if (info.name == "call" and string.find(info.short_src, "network")) then
                 networkCalls = debug.getupvalue(v, 1);
-            end            
+            end      
+            local name = getinfo(v).name 
+            elseif name == "bulletcheck" then
+				bulletCheck = v
+			elseif name == "trajectory" then
+				trajectory = v
+			end      
         end
         if type == "table" then
             if (rawget(v, "gammo")) then
@@ -31,7 +37,6 @@ do
             end
         end
     end
-end
 local shared = getrenv().shared;
 local modules = {
     char = shared.require("char"),
