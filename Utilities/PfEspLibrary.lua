@@ -1,18 +1,14 @@
 ---------------------------------------------
 --             VERSION 1.1.8               --
 ---------------------------------------------
-
-local LocalPlayer = game.Players.LocalPlayer
 local players = game.Players
 local rs = game:GetService("RunService")
 local Camera = workspace.CurrentCamera
--- Phantom Forces sucks i wanna kms
-
 local utility = {}
-
 animations = {}
-
--- Framework
+local workspace = game:GetService("Workspace");
+local replicated_first = game:GetService("ReplicatedFirst");
+local LocalPlayer = game:GetService("Players").LocalPlayer;
 getgenv().client = {};
 do
     local gc = getgc(true)
@@ -20,83 +16,52 @@ do
         local v = gc[i]
         local type = type(v)
         if type == 'function' then
-            if debug.getinfo(v).name == "loadmodules" then
-                client.loadmodules = v
-            end
             local info = debug.getinfo(v);
             if (info.name == "call" and string.find(info.short_src, "network")) then
-                call = v;
                 networkCalls = debug.getupvalue(v, 1);
             end            
-            local name = getinfo(v).name 
-            if name == "bulletcheck" then
-				bulletCheck = v
-			elseif name == "trajectory" then
-				trajectory = v
-			end
         end
         if type == "table" then
-            if (rawget(v, 'send')) then
-                network = v
-                client.network = v
-            elseif (rawget(v, 'basecframe')) then
-                client.camera = v
-            elseif (rawget(v, "gammo")) then
+            if (rawget(v, "gammo")) then
                 client.gamelogic = v
-            elseif (rawget(v, "getbodyparts")) then
-                plrList = getupvalue(v.getbodyparts,1)
-                client.replication = v
-                client.replication.bodyparts = debug.getupvalue(client.replication.getbodyparts, 1)
             elseif (rawget(v, "updateammo")) then
                 client.hud = v
-            elseif (rawget(v, "setbasewalkspeed")) then
-                client.char = v
-            elseif (rawget(v, "getscale")) then
-                client.uiscaler = v
-            elseif (rawget(v, "isplayeralive")) then
-                HUD = v
-            elseif (rawget(v, "updateammo")) then
-                client.hud = v    
-            elseif (rawget(v, "play")) then
-                client.sound = v
-            elseif (rawget(v, "loadgrenade")) then
-                client.char = v                
-            elseif (rawget(v, "new")) and (rawget(v, "reset")) then
-                client.particle = v                        
-            elseif (rawget(v, "getPlayerData")) and (rawget(v, "isDataReady")) then
-                client.datastore = v      
-            elseif (rawget(v, "getPlayerData")) and (rawget(v, "isDataReady")) then
-                client.datastore = v  
-            elseif (rawget(v, "rankCalculator")) and (rawget(v, "getPlayerRank")) then
-                client.datausage = v  
-            elseif (rawget(v, "getAllWeaponsList"))  then
-                client.content = v                  
             end
         end
     end
 end
-
-
+local shared = getrenv().shared;
+local modules = {
+    char = shared.require("char"),
+    values = shared.require("PublicSettings"),
+    replication = shared.require("replication"),
+    hud = shared.require("hud"),
+    effects = shared.require("effects"),
+    network = shared.require("network"), -- votekick , repupdate
+    play = shared.require("sound"),
+    particle = shared.require("particle"),
+    datastore = shared.require("PlayerDataStoreClient"),
+    datausage = shared.require("PlayerDataUtils"),
+    content = shared.require("ContentDatabase"),
+    physics = require(replicated_first.SharedModules.Old.Utilities.Math.physics:Clone())
+};
+modules.replication.bodyparts = debug.getupvalue(modules.replication.getbodyparts, 1)
 function utility:IsAlive(player)
-    if client.replication.bodyparts[player] and client.replication.bodyparts[player].head then
+    if modules.replication.bodyparts[player] and modules.replication.bodyparts[player].head then
         return true
     end
     return false
 end
-
 function utility:GetHealth(Player)
     return client.hud:getplayerhealth(Player)
 end
-
 function utility:GetCharacter(Player)
-    local Character = client.replication.getbodyparts(Player)
-
+    local Character = modules.replication.getbodyparts(Player)
     return Character and Character.torso.Parent, Character and Character.torso
 end
-
 function utility:GetBodypart(Player, Part)
     local success, result = pcall(function()
-        return client.replication.bodyparts[Player][Part:lower()]
+        return modules.replication.bodyparts[Player][Part:lower()]
     end)
     if success then
         return result
@@ -104,7 +69,6 @@ function utility:GetBodypart(Player, Part)
         return nil
     end
 end
-
 function utility:getposlist2(list)
     local top = math.huge
     local bottom = -math.huge
