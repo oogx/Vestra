@@ -9,7 +9,7 @@ animations = {}
 local workspace = game:GetService("Workspace");
 local replicated_first = game:GetService("ReplicatedFirst");
 local LocalPlayer = game:GetService("Players").LocalPlayer;
-getgenv().client = {};
+getgenv().client = {}
 do
     local gc = getgc(true)
     for i = #gc, 1, -1 do
@@ -21,7 +21,7 @@ do
                 networkCalls = debug.getupvalue(v, 1);
             end      
             local name = getinfo(v).name 
-            elseif name == "bulletcheck" then
+            if name == "bulletcheck" then
 				bulletCheck = v
 			elseif name == "trajectory" then
 				trajectory = v
@@ -37,6 +37,7 @@ do
             end
         end
     end
+end
 local shared = getrenv().shared;
 local modules = {
     char = shared.require("char"),
