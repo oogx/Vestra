@@ -30,8 +30,12 @@ do
         if type == "table" then
             if (rawget(v, "gammo")) then
                 client.gamelogic = v
+            elseif (rawget(v, "updateammo")) then
+                client.hud = v
             elseif (rawget(v, "getbodyparts")) then
-                plrList = getupvalue(v.getbodyparts,1)      
+                plrList = getupvalue(v.getbodyparts,1)
+			elseif rawget(v,"isplayeralive") then
+				client.hud = v                
             end
         end
     end
