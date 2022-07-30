@@ -34,6 +34,8 @@ do
                 client.hud = v
             elseif (rawget(v, "getbodyparts")) then
                 plrList = getupvalue(v.getbodyparts,1)
+			elseif rawget(v,"isplayeralive") then
+				client.hud = v                
             end
         end
     end
