@@ -52,7 +52,7 @@ local modules = {
     datastore = shared.require("PlayerDataStoreClient"),
     datausage = shared.require("PlayerDataUtils"),
     content = shared.require("ContentDatabase"),
-    physics = shared.require(replicated_first.SharedModules.Old.Utilities.Math.physics:Clone())
+    physics = require(replicated_first.SharedModules.Old.Utilities.Math.physics:Clone())
 };
 modules.replication.bodyparts = debug.getupvalue(modules.replication.getbodyparts, 1)
 function utility:IsAlive(player)
