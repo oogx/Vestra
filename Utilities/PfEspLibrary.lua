@@ -20,10 +20,9 @@ do
             if (info.name == "call" and string.find(info.short_src, "network")) then
                 networkCalls = debug.getupvalue(v, 1);
             end      
-            local name = getinfo(v).name 
-            if name == "bulletcheck" then
+            if info.name == "bulletcheck" then
 				bulletCheck = v
-			elseif name == "trajectory" then
+			elseif info.name == "trajectory" then
 				trajectory = v
 			end      
         end
