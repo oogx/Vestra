@@ -27,7 +27,9 @@ do
 			elseif info.name == "gunbob" then
 				client.gunbob = v	
 			elseif info.name == "gunsway" then
-				client.gunsway = v					
+				client.gunsway = v			
+            elseif info.name == "loadgun" then
+                client.loadgun = v		
 			end      
         end
         if type == "table" then
