@@ -22,6 +22,8 @@ do
             end      
             if info.name == "bulletcheck" then
 				bulletCheck = v
+            elseif info.name == "trajectory" then
+				trajectory = v
 			elseif info.name == "fromaxisangle" then
 				client.fromaxisangle = v
 			elseif info.name == "gunbob" then
