@@ -22,8 +22,12 @@ do
             end      
             if info.name == "bulletcheck" then
 				bulletCheck = v
-			elseif info.name == "trajectory" then
-				trajectory = v
+			elseif info.name == "fromaxisangle" then
+				client.fromaxisangle = v
+			elseif info.name == "gunbob" then
+				client.gunbob = v	
+			elseif info.name == "gunsway" then
+				client.gunsway = v					
 			end      
         end
         if type == "table" then
