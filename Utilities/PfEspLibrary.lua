@@ -164,10 +164,6 @@ defaultsettings = {
         Tracers = false,
         Skeletons = false,
         Healthbars = false,
-        Outlines = false,
-        VisibleOutlines = false,
-        Chams = false,
-        VisibleChams = false,
         Names = false,
         Distances = false,
         Weapons = false,
@@ -178,10 +174,6 @@ defaultsettings = {
         Tracers = true,
         Skeletons = true,
         Healthbars = true,
-        Outlines = true,
-        VisibleOutlines = true,
-        Chams = true,
-        VisibleChams = true,
         Names = true,
         Distances = true
     },
@@ -195,18 +187,6 @@ defaultsettings = {
         SkeletonEnemyColor = Color3.fromRGB(255,0,0),
         SkeletonTeamColor = Color3.fromRGB(0,0,255),
 
-        OutlinesEnemyColor = Color3.fromRGB(255,0,0),
-        OutlinesTeamColor = Color3.fromRGB(0,0,255),
-
-        VisibleOutlinesEnemyColor = Color3.fromRGB(255,0,0),
-        VisibleOutlinesTeamColor = Color3.fromRGB(0,0,255),
-
-        ChamsEnemyColor = Color3.fromRGB(255,0,0),
-        ChamsTeamColor = Color3.fromRGB(0,0,255),
-
-        VisibleChamsEnemyColor = Color3.fromRGB(255,0,0),
-        VisibleChamsTeamColor = Color3.fromRGB(0,0,255),
-
         NameEnemyColor = Color3.fromRGB(255,0,0),
         NameTeamColor = Color3.fromRGB(0,0,255),
 
@@ -215,7 +195,7 @@ defaultsettings = {
 
         HealthbarFullColor = Color3.fromRGB(0,255,0),
         HealthbarEmptyColor = Color3.fromRGB(255,0,0),
-        WeaponColor = Color3.fromRGB(0,255,0),
+        WeaponColor = Color3.fromRGB(255,255,255),
 
         CrosshairColor = Color3.fromRGB(255,255,255)
     },
@@ -230,27 +210,19 @@ defaultsettings = {
         TracerPart = "head",
 
         NameTextSize = 15,
-        NameTextOutline = false,
+        NameTextOutline = true,
         NameFontFamily = Drawing.Fonts["UI"],
 
         WeaponTextSize = 15,
-        WeaponTextOutline = false,
+        WeaponTextOutline = true,
         WeaponFontFamily = Drawing.Fonts["UI"],
 
         SkeletonThickness = 2,
         SkeletonTransparency = 0.5,
 
         DistanceTextSize = 15,
-        DistanceTextOutline = false,
+        DistanceTextOutline = true,
         DistanceFontFamily = Drawing.Fonts["UI"],
-
-        ChamsTransparency = 0.5,
-
-        VisibleChamsTransparency = 0,
-
-        OutlinesTransparency = 0,
-
-        VisibleOutlinesTransparency = 0,
 
         HealthbarOffset = 10,
 
