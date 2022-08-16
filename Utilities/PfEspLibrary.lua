@@ -44,7 +44,9 @@ do
                 client.replication = v
                 client.replication.bodyparts = debug.getupvalue(client.replication.getbodyparts, 1)
 			elseif rawget(v,"isplayeralive") then
-				client.hud = v                
+				client.hud = v      
+            elseif rawget(v,"basecframe") then
+				client.camera = v           
             end
         end
     end
@@ -905,7 +907,7 @@ function AddWeaponsToRenderList(gun)
 
     local text = Drawing.new("Text")
     text.Visible = false
-    text.Text = ""..gun.Gun.Value.."\n"..gun.Spare.Value.." Bullets"
+    text.Text = gun.Gun.Value
     text.Color = esp_settings.Colors.WeaponColor
     text.Size = esp_settings.Other.WeaponTextSize
     text.Font = esp_settings.Other.WeaponFontFamily
