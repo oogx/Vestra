@@ -32,6 +32,8 @@ do
 				client.gunsway = v			
             elseif info.name == "loadgun" then
                 client.loadgun = v		
+            elseif info.name == "play" then
+                client.sounds = v		               
 			end      
         end
         if type == "table" then
