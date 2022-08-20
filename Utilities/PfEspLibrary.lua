@@ -35,7 +35,7 @@ do
             elseif info.name == "play" then
                 client.sounds = v	
             elseif info.name == "muzzleflash" then   
-                client.char = v
+                client.muzzleflash = v
 			end      
         end
         if type == "table" then
