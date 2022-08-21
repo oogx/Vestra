@@ -36,6 +36,8 @@ do
                 client.sounds = v	
             elseif info.name == "muzzleflash" then   
                 client.muzzleflash = v
+            elseif info.name == "loadplayer" then   
+                client.loadplayer = v
 			end      
         end
         if type == "table" then
@@ -48,9 +50,7 @@ do
                 client.replication = v
                 client.replication.bodyparts = debug.getupvalue(client.replication.getbodyparts, 1)
 			elseif rawget(v,"isplayeralive") then
-				client.hud = v      
-            elseif rawget(v,"basecframe") then
-				client.camera = v           
+				client.hud = v           
             end
         end
     end
