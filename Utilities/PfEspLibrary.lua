@@ -34,8 +34,6 @@ do
                 client.loadgun = v		
             elseif info.name == "play" then
                 client.sounds = v	
-            elseif info.name == "muzzleflash" then   
-                client.muzzleflash = v
             elseif info.name == "loadplayer" then   
                 client.loadplayer = v
 			end      
