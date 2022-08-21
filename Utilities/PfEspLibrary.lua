@@ -48,7 +48,9 @@ do
                 client.replication = v
                 client.replication.bodyparts = debug.getupvalue(client.replication.getbodyparts, 1)
 			elseif rawget(v,"isplayeralive") then
-				client.hud = v           
+				client.hud = v    
+            elseif rawget(v, "basecframe") then
+                client.camera = v       
             end
         end
     end
