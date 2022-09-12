@@ -573,3 +573,4 @@ game.Players.PlayerRemoving:Connect(function(v)
        table.remove(Esp.Players, v.Name)
    end
 end)
+return Esp
