@@ -85,6 +85,7 @@ local Esp = {
     Players = {},
     Misc = {},
 }
+local userinputservice = game:GetService("UserInputService")
 function Esp.Utility:IsAlive(plr)
     if plr.Character and plr.Character:FindFirstChild("Head") then
         return true
@@ -297,8 +298,8 @@ function Esp.Utility:Draw(plr)
                 InnerTracer.From = Vector2.new(Esp.locals.Camera.ViewportSize.X / 2, 1000)
                 OuterTracer.From = Vector2.new(Esp.locals.Camera.ViewportSize.X / 2, 1000)
             elseif Esp.Position.TracerFrom == "Mouse" then
-                InnerTracer.From = game.UserInputService:GetMouseLocation()
-                OuterTracer.From = game.UserInputService:GetMouseLocation()
+                InnerTracer.From = userinputservice:GetMouseLocation()
+                OuterTracer.From = userinputservice:GetMouseLocation()
             end
             if Esp.Position.TracerTo == "Head" then
                 InnerTracer.To = Vector2.new(HeadPos.X,HeadPos.Y)
