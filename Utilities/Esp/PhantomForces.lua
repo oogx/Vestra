@@ -310,30 +310,30 @@ function Esp.Utility:Draw(plr)
             HealthBarOutline.Visible = Esp.Outline.HealthBars and CanShow
             HealthBar.Thickness = Esp.Thickness.HealthBars
             HealthBarOutline.Thickness = Esp.Thickness.HealthBarsOutline
-            HealthBar.Color = Esp.Colour.Full
+            HealthBar.Color = Esp.Colour.Empty:Lerp(Esp.Colour.Full, Esp.Utility:GetHealth(plr)/100);
             HealthBarOutline.Color = Esp.Colour.OutLine
             HealthBar.ZIndex = 4
             HealthBarOutline.ZIndex = 3
             HealthBar.Filled = CanShow
         if Esp.Position.HealthBar == "Left" then
-            HealthBar.Position = Vector2.new(RootPos.X - BoxSize.X / 2,RootPos.Y - BoxSize.Y / 2) + Vector2.new(-4,0)
-            HealthBarOutline.Position = Vector2.new(RootPos.X - BoxSize.X / 2,RootPos.Y - BoxSize.Y / 2) + Vector2.new(-4,0)
-            HealthBar.Size = Vector2.new(1,Height)
+            HealthBar.Position = Vector2.new(RootPos.X - BoxSize.X / 2 - 4,RootPos.Y - BoxSize.Y / 2)
+            HealthBarOutline.Position = Vector2.new(RootPos.X - BoxSize.X / 2 - 4,RootPos.Y - BoxSize.Y / 2)
+            HealthBar.Size = Vector2.new(1,math.floor(BoxSize.Y * (Health/MaxHealth)))
             HealthBarOutline.Size = Vector2.new(1,Height)
         elseif Esp.Position.HealthBar == "Right" then
-            HealthBar.Position = Vector2.new(RootPos.X - BoxSize.X / 2,RootPos.Y - BoxSize.Y / 2) + Vector2.new(Width + 4,0)
-            HealthBarOutline.Position = Vector2.new(RootPos.X - BoxSize.X / 2,RootPos.Y - BoxSize.Y / 2) + Vector2.new(Width + 4,0)
-            HealthBar.Size = Vector2.new(1,Height)
+            HealthBar.Position = Vector2.new(RootPos.X - BoxSize.X / 2 + Width + 4,RootPos.Y - BoxSize.Y / 2) 
+            HealthBarOutline.Position = Vector2.new(RootPos.X - BoxSize.X / 2 + Width + 4,RootPos.Y - BoxSize.Y / 2) 
+            HealthBar.Size = Vector2.new(1,math.floor(BoxSize.Y * (Health/MaxHealth)))
             HealthBarOutline.Size = Vector2.new(1,Height)
         elseif Esp.Position.HealthBar == "Bottom" then
-            HealthBar.Position = Vector2.new(RootPos.X - BoxSize.X / 2,RootPos.Y - BoxSize.Y / 2) + Vector2.new(0,Height + 4)
-            HealthBarOutline.Position = Vector2.new(RootPos.X - BoxSize.X / 2,RootPos.Y - BoxSize.Y / 2) + Vector2.new(0,Height + 4)      
-            HealthBar.Size = Vector2.new(Width,1)
+            HealthBar.Position = Vector2.new(RootPos.X - BoxSize.X / 2,RootPos.Y - BoxSize.Y / 2 + Height + 4) 
+            HealthBarOutline.Position = Vector2.new(RootPos.X - BoxSize.X / 2,RootPos.Y - BoxSize.Y / 2 + Height + 4)
+            HealthBar.Size = Vector2.new(math.floor(Width * (Health/MaxHealth)),1)
             HealthBarOutline.Size = Vector2.new(Width,1)
         elseif Esp.Position.HealthBar == "Top" then
-            HealthBar.Position = Vector2.new(RootPos.X - BoxSize.X / 2,RootPos.Y - BoxSize.Y / 2) + Vector2.new(0,-4)
-            HealthBarOutline.Position = Vector2.new(RootPos.X - BoxSize.X / 2,RootPos.Y - BoxSize.Y / 2) + Vector2.new(0,-4)      
-            HealthBar.Size = Vector2.new(Width,1)
+            HealthBar.Position = Vector2.new(RootPos.X - BoxSize.X / 2,RootPos.Y - BoxSize.Y / 2 -4)
+            HealthBarOutline.Position = Vector2.new(RootPos.X - BoxSize.X / 2,RootPos.Y - BoxSize.Y / 2 -4)    
+            HealthBar.Size = Vector2.new(math.floor(Width * (Health/MaxHealth)),1)
             HealthBarOutline.Size = Vector2.new(Width,1)                
         end
         else
