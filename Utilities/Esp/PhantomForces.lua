@@ -97,22 +97,22 @@ do
                 networkCalls = debug.getupvalue(v, 1);
             end      
             if info.name == "bulletcheck" then
-		bulletCheck = v
+		        client.bulletcheck = v
             elseif info.name == "trajectory" then
-		trajectory = v
-	    elseif info.name == "fromaxisangle" then
-		client.fromaxisangle = v
-	    elseif info.name == "gunbob" then
-		client.gunbob = v	
-	    elseif info.name == "gunsway" then
-		client.gunsway = v			
+		        client.trajectory = v
+	        elseif info.name == "fromaxisangle" then
+		        client.fromaxisangle = v
+	        elseif info.name == "gunbob" then
+		        client.gunbob = v	
+	        elseif info.name == "gunsway" then
+		        client.gunsway = v			
             elseif info.name == "loadgun" then
                 client.loadgun = v		
             elseif info.name == "play" then
                 client.sounds = v	
             elseif info.name == "loadplayer" then   
                 client.loadplayer = v
-	    end      
+	        end      
         end
         if type == "table" then
             if (rawget(v, "gammo")) then
@@ -120,13 +120,16 @@ do
             elseif (rawget(v, "updateammo")) then
                 client.hud = v
             elseif (rawget(v, "getbodyparts")) then
-                plrList = getupvalue(v.getbodyparts,1)
                 client.replication = v
                 client.replication.bodyparts = debug.getupvalue(client.replication.getbodyparts, 1)
-	    elseif rawget(v,"isplayeralive") then
-		client.hud = v
+	        elseif rawget(v,"isplayeralive") then
+		        client.hud = v
             elseif rawget(v, "basecframe") then
                 client.camera = v
+            elseif rawget(v, "setbasewalkspeed") then
+                client.character = v
+            elseif rawget(v, "send") then
+                client.network = v
             end
         end
     end
