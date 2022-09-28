@@ -85,9 +85,78 @@ local Esp = {
     Players = {},
     Misc = {},
 }
-
+getgenv().client = {}
+do
+    local gc = getgc(true)
+    for i = #gc, 1, -1 do
+        local v = gc[i]
+        local type = type(v)
+        if type == 'function' then
+            local info = debug.getinfo(v);
+            if (info.name == "call" and string.find(info.short_src, "network")) then
+                networkCalls = debug.getupvalue(v, 1);
+            end      
+            if info.name == "bulletcheck" then
+		    client.bulletcheck = v
+            elseif info.name == "trajectory" then
+		    client.trajectory = v
+	      elseif info.name == "fromaxisangle" then
+		    client.fromaxisangle = v
+	      elseif info.name == "gunbob" then
+		    client.gunbob = v	
+	      elseif info.name == "gunsway" then
+		    client.gunsway = v			
+            elseif info.name == "loadgun" then
+                client.loadgun = v		
+            elseif info.name == "play" then
+                client.sounds = v	
+            elseif info.name == "loadplayer" then   
+                client.loadplayer = v
+	      end      
+        end
+        if type == "table" then
+            if (rawget(v, "gammo")) then
+                client.gamelogic = v
+            elseif (rawget(v, "updateammo")) then
+                client.hud = v
+            elseif (rawget(v, "getbodyparts")) then
+                client.replication = v
+                client.replication.bodyparts = debug.getupvalue(client.replication.getbodyparts, 1)
+	       elseif rawget(v,"isplayeralive") then
+		    client.hud = v
+            elseif rawget(v, "basecframe") then
+                client.camera = v
+            elseif rawget(v, "setbasewalkspeed") then
+                client.character = v
+            elseif rawget(v, "send") then
+                client.network = v
+            end
+        end
+    end
+end
+local shared = getrenv().shared;
+local modules = {
+    char = shared.require("char"),
+    values = shared.require("PublicSettings"),
+    replication = shared.require("replication"),
+    hud = shared.require("hud"),
+    effects = shared.require("effects"),
+    network = shared.require("network"), -- votekick , repupdate
+    play = shared.require("sound"),
+    particle = shared.require("particle"),
+    datastore = shared.require("PlayerDataStoreClient"),
+    datausage = shared.require("PlayerDataUtils"),
+    content = shared.require("ContentDatabase"),
+    physics = require(game.ReplicatedFirst.SharedModules.Old.Utilities.Math.physics:Clone())
+};
+modules.replication.bodyparts = debug.getupvalue(modules.replication.getbodyparts, 1) 
 local userinputservice = game:GetService("UserInputService")
-
+function Esp.Utility:IsAlive(plr)
+    if modules.replication.bodyparts[plr] and modules.replication.bodyparts[plr].head then
+        return true
+    end
+    return false
+end
 function Esp.Utility:Round(number)
     return math.floor(number + 0.5)
 end
@@ -97,13 +166,25 @@ end
 function Esp.Utility:GetTeam(plr)
     return plr.Team
 end
+function Esp.Utility:GetHealth(plr)
+    return client.hud:getplayerhealth(plr)
+end
 function Esp.Utility:Disable()
     if connections then
         connections:Disconnect()
     end
     return Esp.Misc 
 end
-
+function Esp.Utility:GetBodypart(Player, Part)
+    local success, result = pcall(function()
+        return modules.replication.bodyparts[Player][Part:lower()]
+    end)
+    if success then
+        return result
+    else
+        return nil
+    end
+end
 function Esp.Utility:WorldToViewportPoint(position)
     local pos = Esp.locals.Camera:WorldToViewportPoint(position)
     return Vector2.new(pos.X,pos.Y) , pos,Z
