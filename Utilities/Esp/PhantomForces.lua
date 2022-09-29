@@ -14,7 +14,7 @@ local Esp = {
         Boxes = 1,
         BoxesOutline = 3,
         HealthBars = 1,
-        HealthBarsOutline = 3,
+        HealthBarsOutline = 1,
         Tracers = 1,
         TracersOutline = 3,
         LookLine = 1,
@@ -85,55 +85,6 @@ local Esp = {
     Players = {},
     Misc = {},
 }
-getgenv().client = {}
-do
-    local gc = getgc(true)
-    for i = #gc, 1, -1 do
-        local v = gc[i]
-        local type = type(v)
-        if type == 'function' then
-            local info = debug.getinfo(v);
-            if (info.name == "call" and string.find(info.short_src, "network")) then
-                networkCalls = debug.getupvalue(v, 1);
-            end      
-            if info.name == "bulletcheck" then
-		    client.bulletcheck = v
-            elseif info.name == "trajectory" then
-		    client.trajectory = v
-	      elseif info.name == "fromaxisangle" then
-		    client.fromaxisangle = v
-	      elseif info.name == "gunbob" then
-		    client.gunbob = v	
-	      elseif info.name == "gunsway" then
-		    client.gunsway = v			
-            elseif info.name == "loadgun" then
-                client.loadgun = v		
-            elseif info.name == "play" then
-                client.sounds = v	
-            elseif info.name == "loadplayer" then   
-                client.loadplayer = v
-	      end      
-        end
-        if type == "table" then
-            if (rawget(v, "gammo")) then
-                client.gamelogic = v
-            elseif (rawget(v, "updateammo")) then
-                client.hud = v
-            elseif (rawget(v, "getbodyparts")) then
-                client.replication = v
-                client.replication.bodyparts = debug.getupvalue(client.replication.getbodyparts, 1)
-	       elseif rawget(v,"isplayeralive") then
-		    client.hud = v
-            elseif rawget(v, "basecframe") then
-                client.camera = v
-            elseif rawget(v, "setbasewalkspeed") then
-                client.character = v
-            elseif rawget(v, "send") then
-                client.network = v
-            end
-        end
-    end
-end
 local shared = getrenv().shared;
 local modules = {
     char = shared.require("char"),
@@ -167,7 +118,7 @@ function Esp.Utility:GetTeam(plr)
     return plr.Team
 end
 function Esp.Utility:GetHealth(plr)
-    return client.hud:getplayerhealth(plr)
+    return modules.hud:getplayerhealth(plr)
 end
 function Esp.Utility:Disable()
     if connections then
