@@ -44,10 +44,7 @@ local Esp = {
     },
     Position = {
         TracerFrom = "Top",     -- Top,Bottom,Mouse
-        TracerTo = "Head",      -- Head,Root,
-        Name = "Top",           -- Top,Bottom
-        Distance = "Top",       -- Top,Bottom
-        HealthBar = "Left",     -- Top,Bottom
+        TracerTo = "Head",      -- Head,Root
     },
     Colour = {
         Enemy = Color3.fromRGB(255,0,0),
@@ -75,7 +72,6 @@ local Esp = {
         LocalPlayer = game.Players.LocalPlayer,
         Camera = workspace.CurrentCamera,
         RunService = game.RunService,
-        CoreGui = game.CoreGui,
     },
     OffSets = {
         Head = Vector3.new(0,0.5,0),
@@ -92,7 +88,7 @@ local modules = {
     replication = shared.require("replication"),
     hud = shared.require("hud"),
     effects = shared.require("effects"),
-    network = shared.require("network"), -- votekick , repupdate
+    network = shared.require("network"),
     play = shared.require("sound"),
     particle = shared.require("particle"),
     datastore = shared.require("PlayerDataStoreClient"),
@@ -101,7 +97,6 @@ local modules = {
     physics = require(game.ReplicatedFirst.SharedModules.Old.Utilities.Math.physics:Clone())
 };
 modules.replication.bodyparts = debug.getupvalue(modules.replication.getbodyparts, 1) 
-local userinputservice = game:GetService("UserInputService")
 function Esp.Utility:IsAlive(plr)
     if modules.replication.bodyparts[plr] and modules.replication.bodyparts[plr].head then
         return true
@@ -120,12 +115,6 @@ end
 function Esp.Utility:GetHealth(plr)
     return modules.hud:getplayerhealth(plr)
 end
-function Esp.Utility:Disable()
-    if connections then
-        connections:Disconnect()
-    end
-    return Esp.Misc 
-end
 function Esp.Utility:GetBodypart(Player, Part)
     local success, result = pcall(function()
         return modules.replication.bodyparts[Player][Part:lower()]
@@ -135,10 +124,6 @@ function Esp.Utility:GetBodypart(Player, Part)
     else
         return nil
     end
-end
-function Esp.Utility:WorldToViewportPoint(position)
-    local pos = Esp.locals.Camera:WorldToViewportPoint(position)
-    return Vector2.new(pos.X,pos.Y) , pos,Z
 end
 function Esp.Utility:Square()
     local Square = Drawing.new("Square")
@@ -160,10 +145,6 @@ function Esp.Utility:Text()
     Text.Center = true
     Text.Size = 10
     return Text
-end
-function Esp.Utility:Image()
-    local Image = Drawing.new("Image")
-    return Image
 end
 function Esp.Utility:Circle()
     local Circle = Drawing.new("Circle")
@@ -211,34 +192,32 @@ function Esp.Utility:Draw(plr)
     local SkeletonHeadOutline = Esp.Utility:Line()
     local HeadDotInner = Esp.Utility:Circle()
     local HeadDotOuter = Esp.Utility:Circle()
-
     local connections = Esp.locals.RunService.Stepped:Connect(function()
         if Esp.Switches.Master and Esp.Utility:IsAlive(plr) and plr ~= Esp.locals.LocalPlayer
         and Esp.Utility:Round((Esp.Utility:GetBodypart(plr, "torso").Position - Esp.locals.LocalPlayer.Character.Torso.Position).Magnitude) <= Esp.Settings.MaxDistance
         then
-
         local LeftFoot = Esp.Utility:GetBodypart(plr, "lleg")
         local RightFoot = Esp.Utility:GetBodypart(plr, "rleg")
         local LeftHand = Esp.Utility:GetBodypart(plr, "larm")
         local RightHand = Esp.Utility:GetBodypart(plr, "rarm")
         local Root = Esp.Utility:GetBodypart(plr, "torso")
         local Head = Esp.Utility:GetBodypart(plr, "head")
-
         local RootPos,OnScreen = Esp.locals.Camera:worldToViewportPoint(Root.Position)
         local HeadPos = Esp.locals.Camera:worldToViewportPoint(Head.Position + Esp.OffSets.Head)
-        local LegPos  = Esp.locals.Camera:worldToViewportPoint(Root.Position - Esp.OffSets.Leg)
-        local LeftFootPos =Esp.locals.Camera:worldToViewportPoint(LeftFoot.Position)
-        local RightFootPos =Esp.locals.Camera:worldToViewportPoint(RightFoot.Position)
-        local LeftHandPos =Esp.locals.Camera:worldToViewportPoint(LeftHand.Position)
-        local RightHandPos =Esp.locals.Camera:worldToViewportPoint(RightHand.Position)
-
-        local Length = 1 / (RootPos.Z * math.tan(math.rad(Esp.locals.Camera.FieldOfView * 0.5)) * 2) * 100
-        local Width = math.floor(40 * Length)
-        local Height = math.floor(60 * Length)
-        local BoxSize = Vector2.new(Width,Height)
-        local RayHitPosition, HitPosition = workspace:FindPartOnRayWithIgnoreList(Ray.new(Esp.Utility:GetBodypart(plr, "head").Position,Esp.Utility:GetBodypart(plr, "head").CFrame.LookVector*5,1,-1),{Esp.locals.Camera,plr.Character},false,true,"")
-        local hitpoint = Esp.locals.Camera:worldToViewportPoint(HitPosition)
-        local Health,MaxHealth = Esp.Utility:GetHealth(plr)
+        local LeftFootPos = Esp.locals.Camera:worldToViewportPoint(LeftFoot.Position)
+        local RightFootPos = Esp.locals.Camera:worldToViewportPoint(RightFoot.Position)
+        local LeftHandPos = Esp.locals.Camera:worldToViewportPoint(LeftHand.Position)
+        local RightHandPos = Esp.locals.Camera:worldToViewportPoint(RightHand.Position)
+        local RayHitPosition,HitPosition = workspace:FindPartOnRayWithIgnoreList(Ray.new(Esp.Utility:GetBodypart(plr, "head").Position,Esp.Utility:GetBodypart(plr, "head").CFrame.LookVector*5,1,-1),{Esp.locals.Camera,plr.Character},false,true,"")
+        local HitPoint = Esp.locals.Camera:worldToViewportPoint(HitPosition)
+        local Health = Esp.Utility:GetHealth(plr)
+        -- Got sent code for BoundingBox as i had a shit static size box
+        local BoxOrintation, BoxSize = Head.Parent:GetBoundingBox()
+        local Width = (workspace.CurrentCamera.CFrame-workspace.CurrentCamera.CFrame.p)*Vector3.new((math.clamp(BoxSize.X,1,10)+0.5)/2,0,0)
+        local Height = (workspace.CurrentCamera.CFrame-workspace.CurrentCamera.CFrame.p)*Vector3.new(0,(math.clamp(BoxSize.X,1,10)+2)/2,0)
+        Width = math.abs(workspace.CurrentCamera:WorldToViewportPoint(BoxOrintation.Position+Width).X-workspace.CurrentCamera:WorldToViewportPoint(BoxOrintation.Position-Width).X)
+        Height = math.abs(workspace.CurrentCamera:WorldToViewportPoint(BoxOrintation.Position+Height).Y-workspace.CurrentCamera:WorldToViewportPoint(BoxOrintation.Position-Height).Y)
+        local Size = Vector2.new(math.floor(Width), math.floor(Height))
         if Esp.Settings.TeamCheck and Esp.Utility:GetTeam(plr) == game.Players.LocalPlayer.Team then
             CanShow = false
         else
@@ -247,10 +226,10 @@ function Esp.Utility:Draw(plr)
         if Esp.Switches.Boxes and OnScreen then
             InnerBox.Visible = CanShow
             OuterBox.Visible = Esp.Outline.Boxes and CanShow
-            InnerBox.Size = BoxSize
-            OuterBox.Size = BoxSize
-            InnerBox.Position = Vector2.new(RootPos.X - BoxSize.X / 2,RootPos.Y - BoxSize.Y / 2)
-            OuterBox.Position = Vector2.new(RootPos.X - BoxSize.X / 2,RootPos.Y - BoxSize.Y / 2)
+            InnerBox.Size = Size
+            OuterBox.Size = Size
+            InnerBox.Position = Vector2.new(math.floor(RootPos.X), math.floor(RootPos.Y)) - (InnerBox.Size / 2)
+            OuterBox.Position = Vector2.new(math.floor(RootPos.X), math.floor(RootPos.Y)) - (OuterBox.Size / 2)
             InnerBox.Thickness = Esp.Thickness.Boxes
             OuterBox.Thickness = Esp.Thickness.BoxesOutline
             InnerBox.ZIndex = 2
@@ -269,27 +248,10 @@ function Esp.Utility:Draw(plr)
             HealthBar.ZIndex = 4
             HealthBarOutline.ZIndex = 3
             HealthBar.Filled = CanShow
-        if Esp.Position.HealthBar == "Left" then
-            HealthBar.Position = Vector2.new(RootPos.X - BoxSize.X / 2 - 4,RootPos.Y - BoxSize.Y / 2)
-            HealthBarOutline.Position = Vector2.new(RootPos.X - BoxSize.X / 2 - 4,RootPos.Y - BoxSize.Y / 2)
-            HealthBar.Size = Vector2.new(1,math.floor(BoxSize.Y * (Health/MaxHealth)))
-            HealthBarOutline.Size = Vector2.new(1,Height)
-        elseif Esp.Position.HealthBar == "Right" then
-            HealthBar.Position = Vector2.new(RootPos.X - BoxSize.X / 2 + Width + 4,RootPos.Y - BoxSize.Y / 2) 
-            HealthBarOutline.Position = Vector2.new(RootPos.X - BoxSize.X / 2 + Width + 4,RootPos.Y - BoxSize.Y / 2) 
-            HealthBar.Size = Vector2.new(1,math.floor(BoxSize.Y * (Health/MaxHealth)))
-            HealthBarOutline.Size = Vector2.new(1,Height)
-        elseif Esp.Position.HealthBar == "Bottom" then
-            HealthBar.Position = Vector2.new(RootPos.X - BoxSize.X / 2,RootPos.Y - BoxSize.Y / 2 + Height + 4) 
-            HealthBarOutline.Position = Vector2.new(RootPos.X - BoxSize.X / 2,RootPos.Y - BoxSize.Y / 2 + Height + 4)
-            HealthBar.Size = Vector2.new(math.floor(Width * (Health/MaxHealth)),1)
-            HealthBarOutline.Size = Vector2.new(Width,1)
-        elseif Esp.Position.HealthBar == "Top" then
-            HealthBar.Position = Vector2.new(RootPos.X - BoxSize.X / 2,RootPos.Y - BoxSize.Y / 2 -4)
-            HealthBarOutline.Position = Vector2.new(RootPos.X - BoxSize.X / 2,RootPos.Y - BoxSize.Y / 2 -4)    
-            HealthBar.Size = Vector2.new(math.floor(Width * (Health/MaxHealth)),1)
-            HealthBarOutline.Size = Vector2.new(Width,1)                
-        end
+            HealthBar.Position = Vector2.new(math.floor(RootPos.X) - 6, math.floor(RootPos.Y) + (Size.Y - math.floor(HealthBar.Size.Y))) - Size / 2
+            HealthBarOutline.Position =  Vector2.new(math.floor(RootPos.X) - 7, math.floor(RootPos.Y) - 1) - Size / 2   
+            HealthBar.Size = Vector2.new(2, Size.Y * (1-((100 - Health) / 100)))
+            HealthBarOutline.Size = Vector2.new(4, Size.Y + 2)
         else
             HealthBar.Visible = false
             HealthBarOutline.Visible = false
@@ -308,8 +270,8 @@ function Esp.Utility:Draw(plr)
                 InnerTracer.From = Vector2.new(Esp.locals.Camera.ViewportSize.X / 2, 1000)
                 OuterTracer.From = Vector2.new(Esp.locals.Camera.ViewportSize.X / 2, 1000)
             elseif Esp.Position.TracerFrom == "Mouse" then
-                InnerTracer.From = userinputservice:GetMouseLocation()
-                OuterTracer.From = userinputservice:GetMouseLocation()
+                InnerTracer.From = game:GetService("UserInputService"):GetMouseLocation()
+                OuterTracer.From = game:GetService("UserInputService"):GetMouseLocation()
             end
             if Esp.Position.TracerTo == "Head" then
                 InnerTracer.To = Vector2.new(HeadPos.X,HeadPos.Y)
@@ -329,11 +291,7 @@ function Esp.Utility:Draw(plr)
             Names.Text = plr.Name
             Names.Size = Esp.Size.Name
             Names.Font = Drawing.Fonts["UI"]
-            if Esp.Position.Name == "Bottom" then
-                Names.Position = Vector2.new(RootPos.X,RootPos.Y + Height * 0.5 - 25)
-            elseif Esp.Position.Name == "Top" then
-                Names.Position = Vector2.new(RootPos.X,RootPos.Y - Height * 0.5)
-            end
+            Names.Position = Vector2.new(math.floor(RootPos.X), math.floor(RootPos.Y) - Size.Y / 2 - 16)
         else
             Names.Visible = false
         end
@@ -344,11 +302,7 @@ function Esp.Utility:Draw(plr)
             Distance.Text = "".. tostring(Esp.Utility:Round((Esp.locals.LocalPlayer.Character.Head.Position - Esp.Utility:GetBodypart(plr, "head").Position).Magnitude)) .." Studs"
             Distance.Size = Esp.Size.Distance
             Distance.Font = Drawing.Fonts["UI"]
-            if Esp.Position.Distance == "Bottom" then
-                Distance.Position = Vector2.new(RootPos.X,RootPos.Y + Height * 0.5 -15)
-            elseif Esp.Position.Distance == "Top" then
-                Distance.Position = Vector2.new(RootPos.X,RootPos.Y - Height * 0.5  +10 )
-            end
+            Distance.Position = Vector2.new(math.floor(RootPos.X), math.floor(RootPos.Y) - Size.Y / 20)
         else
             Distance.Visible = false
         end
@@ -359,9 +313,8 @@ function Esp.Utility:Draw(plr)
             OuterLookLine.ZIndex = 7
             InnerLookLine.Thickness = Esp.Thickness.LookLine
             OuterLookLine.Thickness = Esp.Thickness.LookLineOutline
-            
-            InnerLookLine.To = Vector2.new(hitpoint.X,hitpoint.Y)
-            OuterLookLine.To = Vector2.new(hitpoint.X,hitpoint.Y)
+            InnerLookLine.To = Vector2.new(HitPoint.X,HitPoint.Y)
+            OuterLookLine.To = Vector2.new(HitPoint.X,HitPoint.Y)
             OuterLookLine.From = Vector2.new(HeadPos.X,HeadPos.Y)
             InnerLookLine.From = Vector2.new(HeadPos.X,HeadPos.Y)
         else
@@ -486,7 +439,7 @@ function Esp.Utility:Draw(plr)
             SkeletonRightArmOutline.Color = Esp.Colour.OutLine
             SkeletonHeadOutline.Color = Esp.Colour.OutLine   
             HeadDotInner.Color = Esp.Colour.Team
-            HeadDotOuter.Color = Esp.Colour.OutLine    
+            HeadDotOuter.Color = Esp.Colour.OutLine   
         end
         else
             InnerBox.Visible = false
