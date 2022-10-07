@@ -20,7 +20,9 @@ do
 	    elseif info.name == "gunsway" then
 		client.gunsway = v			
             elseif info.name == "loadgun" then
-                client.loadgun = v		
+                client.loadgun = v	
+            elseif info.name == "camera" then
+                client.camera = v
             elseif info.name == "play" then
                 client.sounds = v	
             elseif info.name == "loadplayer" then   
@@ -48,4 +50,4 @@ do
         end
     end
 end
-return client
+client.char = debug.getupvalue(client.camera.step, 7)
