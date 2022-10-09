@@ -7,7 +7,7 @@ do
         if type == 'function' then
             local info = debug.getinfo(v);
             if (info.name == "call" and string.find(info.short_src, "network")) then
-                client.network = debug.getupvalue(v, 1);
+                networkCalls = debug.getupvalue(v, 1);
             end      
             if info.name == "bulletcheck" then
 		client.bulletcheck = v
