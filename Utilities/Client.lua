@@ -50,4 +50,3 @@ do
         end
     end
 end
-client.char = debug.getupvalue(client.camera.step, 7)
