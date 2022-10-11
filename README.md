@@ -1,7 +1,6 @@
 # Credits
    
-- xandu#7795 | Owner , Main Developer  
-- Viloh Mika#2716 | Manager , Developer  
+- xandu#7795 | Owner
     - RegularVynixu#8039 | Helper  
     - Kieran#8629 | Ui Developer  
 
