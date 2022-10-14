@@ -23,7 +23,7 @@ do
                 client.loadgun = v	
             elseif info.name == "camera" then
                 client.camera = v
-            elseif info.name == "effects" then
+            elseif info.name == "breakwindow" then
                 client.effects = v
             elseif info.name == "particle" then
                 client.particle = v
