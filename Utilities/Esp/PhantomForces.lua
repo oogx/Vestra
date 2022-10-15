@@ -81,7 +81,7 @@ local Esp = {
     Players = {},
     Misc = {},
 }
-local Client = loadstring(game:HttpGet("https://raw.githubusercontent.com/xandudiscord/vestra/main/Utilities/Client.lua"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/xandudiscord/vestra/main/Utilities/Client.lua"))()
 function Esp.Utility:IsAlive(plr)
     if client.replication.bodyparts[plr] and client.replication.bodyparts[plr].head then
         return true
