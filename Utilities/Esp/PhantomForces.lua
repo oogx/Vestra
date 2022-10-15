@@ -81,24 +81,9 @@ local Esp = {
     Players = {},
     Misc = {},
 }
-local shared = getrenv().shared;
-local modules = {
-    char = shared.require("char"),
-    values = shared.require("PublicSettings"),
-    replication = shared.require("replication"),
-    hud = shared.require("hud"),
-    effects = shared.require("effects"),
-    network = shared.require("network"),
-    play = shared.require("sound"),
-    particle = shared.require("particle"),
-    datastore = shared.require("PlayerDataStoreClient"),
-    datausage = shared.require("PlayerDataUtils"),
-    content = shared.require("ContentDatabase"),
-    physics = require(game.ReplicatedFirst.SharedModules.Old.Utilities.Math.physics:Clone())
-};
-modules.replication.bodyparts = debug.getupvalue(modules.replication.getbodyparts, 1) 
+local Client = loadstring(game:HttpGet("https://raw.githubusercontent.com/xandudiscord/vestra/main/Utilities/Client.lua"))()
 function Esp.Utility:IsAlive(plr)
-    if modules.replication.bodyparts[plr] and modules.replication.bodyparts[plr].head then
+    if client.replication.bodyparts[plr] and client.replication.bodyparts[plr].head then
         return true
     end
     return false
@@ -113,11 +98,11 @@ function Esp.Utility:GetTeam(plr)
     return plr.Team
 end
 function Esp.Utility:GetHealth(plr)
-    return modules.hud:getplayerhealth(plr)
+    return client.hud:getplayerhealth(plr)
 end
 function Esp.Utility:GetBodypart(Player, Part)
     local success, result = pcall(function()
-        return modules.replication.bodyparts[Player][Part:lower()]
+        return client.replication.bodyparts[Player][Part:lower()]
     end)
     if success then
         return result
