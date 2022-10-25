@@ -27,7 +27,7 @@ do
                 client.effects = v
             elseif info.name == "particle" then
                 client.particle = v
-            elseif info.name == "sound" then
+            elseif info.name == "play" then
                 client.sound = v	
             elseif info.name == "loadplayer" then   
                 client.loadplayer = v
