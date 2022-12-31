@@ -1,1 +1,0 @@
-game.Players.LocalPlayer:Kick("Game is patched | Need to make a remote logger ( cant be arsed to )")
