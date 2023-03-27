@@ -45,6 +45,8 @@ do
                 Client.physics = v
             elseif rawget(v, "slerp") and rawget(v, "toanglesyx") then -- Useful for angles (Note: This table is frozen, use setreadonly)
                 Client.vector = v
+            elseif rawget(v, "getWeaponAttData") then -- Useful for unlock all
+                Client.WeaponData = v
             end
         end
     end
