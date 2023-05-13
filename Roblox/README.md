@@ -1,19 +1,15 @@
-# Credits
-   
-- xandu#7795 | Owner
-    - RegularVynixu#8039 | Helper  
-    - Kieran#8629 | Ui Developer  
+# Read me
 
-# Information
-Loadstring:
+Whats Happened?:
 ```
-loadstring(game:HttpGet("https://raw.githubusercontent.com/xandudiscord/vestra/main/loader.lua"))()
+Moved Loadstring Over To Github Organisation https://github.com/Vestra-Tech/Rblx
+Discontinued Roblox Development. 13/05/2023 | Long Live Vestra
+```
+New Loadstring:
+```
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Vestra-Tech/Rblx/main/loader.lua"))()
 ```
 Discord Server:
 ```
-https://discord.gg/eWrT8m9h8x
-```
-Discord Vanity:
-```
-https://discord.gg/vestra
+https://discord.gg/rBjxFfWarG
 ```
